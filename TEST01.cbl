@@ -81,6 +81,7 @@
       *    *** READ PIN1
                    PERFORM S020-10     THRU    S020-EX
            END-PERFORM
+
       *    *** 0-255 データ出力 WRITE POT1
            PERFORM S100-10     THRU    S100-EX
 
