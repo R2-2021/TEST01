@@ -7,9 +7,9 @@
 
        SELECT PIN1-F           ASSIGN   WK-PIN1-F-NAME
                                STATUS   WK-PIN1-STATUS
-      *    *** PACKED-DECIMAL �̎��A���̎w�肪�K�v�A
-      *    *** X"10",X"0D"������ƍs���܂ŃJ�b�g�A�������폜�����
-      *    *** BINARY SEQUENTIAL WRITE, BINARY SEQUENTIAL READ �ł����Ȃ� 
+      *    *** PACKED-DECIMAL の時、この指定が必要、
+      *    *** X"10",X"0D"があると行末までカット、文字が削除される
+      *    *** BINARY SEQUENTIAL WRITE, BINARY SEQUENTIAL READ でも問題なし 
 
            ORGANIZATION IS RECORD BINARY SEQUENTIAL. 
       *     ORGANIZATION LINE   SEQUENTIAL.
@@ -80,11 +80,11 @@
 
       *    *** READ PIN1
                    PERFORM S020-10     THRU    S020-EX
-      *             PERFORM S200-10     THRU    S200-EX
            END-PERFORM
-      *                 UNTIL   WK-PIN1-EOF   =     HIGH-VALUE
-      ****             UNTIL   WK-PIN1-CNT   =     100
-      *
+      *    *** 0-255 データ出力 WRITE POT1
+           PERFORM S100-10     THRU    S100-EX
+
+      *    *** CLOSE
            PERFORM S900-10     THRU    S900-EX
            .
        M100-EX.
@@ -124,8 +124,8 @@
        S020-10.
            READ    PIN1-F
 
-      *    *** ORGANIZATION IS �ɂ���ƁA
-      *    *** AT END �ł��ȉ����s���Ȃ�
+      *    *** ORGANIZATION IS にすると、
+      *    *** AT END でも以下実行しない
       *            AT END
       *            MOVE    HIGH-VALUE    TO    WK-PIN1-EOF
       *    END-READ
@@ -138,7 +138,7 @@
                                                PIN1-REC
            ELSE
       *    *** STATUS = 10 (END OF FILE)
-      *    *** ORGANIZATION IS �ɂ���� STATUS=4 ��AT END�̂Ƃ��A����
+      *    *** ORGANIZATION IS にすると STATUS=4 がAT ENDのとき、入る
                IF  WK-PIN1-STATUS =    10
                    MOVE    HIGH-VALUE  TO      WK-PIN1-EOF
                ELSE
@@ -172,7 +172,7 @@
                                                POT1-REC
            END-PERFORM
 
-      *     MOVE    "����������" TO       PIN1-KANJI
+      *     MOVE    "あいうえお" TO       PIN1-KANJI
       *     WRITE   POT1-REC    FROM      PIN1-REC
       *     IF      WK-POT1-STATUS NOT =  ZERO
       *             DISPLAY "TEST01 POT1-F WRITE ERROR STATUS="
@@ -187,7 +187,8 @@
            .
        S100-EX.
            EXIT.
-      *
+
+      *    *** CLOSE
        S900-10.
            
            CLOSE   PIN1-F
@@ -209,8 +210,8 @@
                                        POT1-REC
 
            DISPLAY WK-PGM-NAME " END"
-           DISPLAY WK-PGM-NAME " PIN1 �ݽ� = " WK-PIN1-CNT
-           DISPLAY WK-PGM-NAME " POT1 �ݽ� = " WK-POT1-CNT
+           DISPLAY WK-PGM-NAME " PIN1 ｹﾝｽｳ = " WK-PIN1-CNT
+           DISPLAY WK-PGM-NAME " POT1 ｹﾝｽｳ = " WK-POT1-CNT
 
            MOVE    "E"         TO      WDT-DATE-TIME-ID
            CALL    "DATETIME"  USING   WDT-DATETIME-AREA
