@@ -7,9 +7,9 @@
 
        SELECT PIN1-F           ASSIGN   WK-PIN1-F-NAME
                                STATUS   WK-PIN1-STATUS
-      *    *** PACKED-DECIMAL の時、この指定が必要、
-      *    *** X"10",X"0D"があると行末までカット、文字が削除される
-      *    *** BINARY SEQUENTIAL WRITE, BINARY SEQUENTIAL READ でも問題なし 
+      *    *** PACKED-DECIMAL �̎��A���̎w�肪�K�v�A
+      *    *** X"10",X"0D"������ƍs���܂ŃJ�b�g�A�������폜�����
+      *    *** BINARY SEQUENTIAL WRITE, BINARY SEQUENTIAL READ �ł����Ȃ� 
 
            ORGANIZATION IS RECORD BINARY SEQUENTIAL. 
       *     ORGANIZATION LINE   SEQUENTIAL.
@@ -81,7 +81,7 @@
       *    *** READ PIN1
                    PERFORM S020-10     THRU    S020-EX
            END-PERFORM
-      *    *** 0-255 データ出力 WRITE POT1
+      *    *** 0-255 �f�[�^�o�� WRITE POT1
            PERFORM S100-10     THRU    S100-EX
 
       *    *** CLOSE
@@ -124,8 +124,8 @@
        S020-10.
            READ    PIN1-F
 
-      *    *** ORGANIZATION IS にすると、
-      *    *** AT END でも以下実行しない
+      *    *** ORGANIZATION IS �ɂ���ƁA
+      *    *** AT END �ł��ȉ����s���Ȃ�
       *            AT END
       *            MOVE    HIGH-VALUE    TO    WK-PIN1-EOF
       *    END-READ
@@ -138,7 +138,7 @@
                                                PIN1-REC
            ELSE
       *    *** STATUS = 10 (END OF FILE)
-      *    *** ORGANIZATION IS にすると STATUS=4 がAT ENDのとき、入る
+      *    *** ORGANIZATION IS �ɂ���� STATUS=4 ��AT END�̂Ƃ��A����
                IF  WK-PIN1-STATUS =    10
                    MOVE    HIGH-VALUE  TO      WK-PIN1-EOF
                ELSE
@@ -174,7 +174,7 @@
                                                POT1-REC
            END-PERFORM
 
-      *     MOVE    "あいうえお" TO       PIN1-KANJI
+      *     MOVE    "����������" TO       PIN1-KANJI
       *     WRITE   POT1-REC    FROM      PIN1-REC
       *     IF      WK-POT1-STATUS NOT =  ZERO
       *             DISPLAY "TEST01 POT1-F WRITE ERROR STATUS="
@@ -212,8 +212,8 @@
                                        POT1-REC
 
            DISPLAY WK-PGM-NAME " END"
-           DISPLAY WK-PGM-NAME " PIN1 ｹﾝｽｳ = " WK-PIN1-CNT
-           DISPLAY WK-PGM-NAME " POT1 ｹﾝｽｳ = " WK-POT1-CNT
+           DISPLAY WK-PGM-NAME " PIN1 �ݽ� = " WK-PIN1-CNT
+           DISPLAY WK-PGM-NAME " POT1 �ݽ� = " WK-POT1-CNT
 
            MOVE    "E"         TO      WDT-DATE-TIME-ID
            CALL    "DATETIME"  USING   WDT-DATETIME-AREA
