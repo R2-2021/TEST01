@@ -166,6 +166,8 @@
                    ADD     1           TO        WK-POT1-CNT
 
                    MOVE    "P"         TO      WFD-ID
+                   MOVE    I           TO      WFD-SEQ
+                   MOVE    2           TO      WFD-SU
                    MOVE    "M"         TO      WFD-TYPE
                    MOVE    "      "    TO      WFD-ITEM
                    CALL    "FILEDUMP"  USING   WFD-FILEDUMP-AREA
